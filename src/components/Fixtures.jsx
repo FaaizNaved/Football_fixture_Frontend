@@ -29,7 +29,16 @@ const Fixtures = () => {
     const fetchFixtures = async () => {
         try {
             setLoading(true);
-            const url = import.meta.env.VITE_BACKEND_URL;
+            const url = import.meta.env.VITE_BACKEND_URL || '';
+
+            if (!url) {
+                setLoading(false);
+                console.error('VITE_BACKEND_URL is not configured');
+                navigate('/');
+                alert('Backend URL not configured. Check environment variables.');
+                return;
+            }
+
             const response = await fetch(url);
             const responseData = await response.json();
 
